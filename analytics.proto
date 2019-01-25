@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package analytics;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service Events {
+    rpc TrackEvent (TrackEventRequest) returns (TrackEventResponse) {
+        option(google.api.http) = {
+            post: "/accounts/{account_id}/spaces/{space_id}/analytics/events/"
+            body: "*"
+        };
+    }
+}
+
+message TrackEventRequest {
+    required SessionData sessionData = 1;
+    EventQueue eventQueue = 2;
+    string account_id = 3;
+    string space_id = 4;
+}
+
+message SessionData {
+    string account_id = 1;
+    string ad_id = 2;
+    int32 app_launch_count = 3;
+    string browser = 4;
+    string browser_version = 5;
+    string client_app_name = 6;
+    string device_category = 7;
+    string fingerprint = 8;
+    string installer_id = 9;
+    string mobile_device_model = 10;
+    string operating_system = 11;
+    string operating_system_version = 12;
+    string screen_resolution = 13;
+    string slyce_sdk_platform = 14;
+    string user_location = 15;
+    string slyce_id = 16;
+    string user_id = 17;
+}
+
+message EventQueue {
+    CustomDimensions custom_dimensions = 1;
+    string event_action = 2;
+    string event_category = 3;
+    string event_label = 4;
+    int32 hit_number = 5;
+    string hit_timestamp = 6;
+    string job_id = 7;
+}
+
+message CustomDimensions {
+    string lens_id = 1;
+    string layer_id = 2;
+}
+
+message TrackEventResponse {
+    string topic = 1;
+    string msg_type = 2;
+    string account_id = 3;
+    string task_id = 4;
+    string created_by = 5;
+    string job_id = 6;
+    string name = 7;
+    required ProcessStatus process_status = 8;
+}
+
+message ProcessStatus {
+    int32 status = 1;
+    string display = 2;
+}
